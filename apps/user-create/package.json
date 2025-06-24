@@ -1,0 +1,78 @@
+{
+  "name": "@ecommerce-microservices/user-create",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "targets": {
+      "build": {
+        "executor": "@nx/esbuild:esbuild",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "defaultConfiguration": "production",
+        "options": {
+          "platform": "node",
+          "outputPath": "apps/user-create/dist",
+          "format": [
+            "cjs"
+          ],
+          "bundle": false,
+          "main": "apps/user-create/src/main.ts",
+          "tsConfig": "apps/user-create/tsconfig.app.json",
+          "assets": [
+            "apps/user-create/src/assets"
+          ],
+          "esbuildOptions": {
+            "sourcemap": true,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        },
+        "configurations": {
+          "development": {},
+          "production": {
+            "generateLockfile": true,
+            "esbuildOptions": {
+              "sourcemap": false,
+              "outExtension": {
+                ".js": ".js"
+              }
+            }
+          }
+        }
+      },
+      "serve": {
+        "continuous": true,
+        "executor": "@nx/js:node",
+        "defaultConfiguration": "development",
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "buildTarget": "@ecommerce-microservices/user-create:build",
+          "runBuildTargetDependencies": false
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "@ecommerce-microservices/user-create:build:development"
+          },
+          "production": {
+            "buildTarget": "@ecommerce-microservices/user-create:build:production"
+          }
+        }
+      },
+      "test": {
+        "options": {
+          "passWithNoTests": true
+        }
+      },
+      "docker-build": {
+        "dependsOn": [
+          "build"
+        ],
+        "command": "docker build -f apps/user-create/Dockerfile . -t ecommerce-microservices-user-create"
+      }
+    }
+  }
+}
