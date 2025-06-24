@@ -29,13 +29,11 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r apps/user/user-create-service/requirements.txt
-          pip install pytest
 
       - name: Run tests
-        working-directory: apps/user/user-create-service
         run: |
-          export PYTHONPATH=$(pwd)
-          pytest tests/
+          cd apps/user/user-create-service
+          PYTHONPATH=. pytest tests/
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
