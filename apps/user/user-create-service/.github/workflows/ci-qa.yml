@@ -1,6 +1,4 @@
-# .github/workflows/ci-qa.yml
-
-name: CI - QA - User Create Service
+name: CI - QA - User Create v2
 
 on:
   push:
