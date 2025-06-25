@@ -44,4 +44,6 @@ jobs:
       - name: Build and push Docker image
         run: |
           docker build -t rommela462/user-create-service:qa-latest ./apps/user/user-create-service
-          docker push rommela462/user-create-service:qa-latest
+          echo "🚀 Docker image built successfully"
+          docker push rommela462/user-create-service:qa-latest || (echo "❌ Docker push failed" && exit 1)
+
