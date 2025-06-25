@@ -13,7 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Copy application code
+# Copy application code1
 COPY . .
 
 # Expose Flask default port
