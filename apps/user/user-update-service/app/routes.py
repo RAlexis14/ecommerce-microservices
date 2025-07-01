@@ -1,3 +1,5 @@
+# app/routes.py
+
 from config import MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB
 from flask import Blueprint, request, jsonify
 from flasgger.utils import swag_from
@@ -77,3 +79,8 @@ def update_user(user_id):
         connection.commit()
 
     return jsonify({'message': 'User updated'}), 200
+
+@bp.route('/health', methods=['GET'])
+def health():
+    """Health check endpoint."""
+    return jsonify({'status': 'ok'}), 200
