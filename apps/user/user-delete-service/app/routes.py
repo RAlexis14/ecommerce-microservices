@@ -46,3 +46,8 @@ def delete_user(user_id):
     if result == 0:
         return jsonify({'message': 'User not found'}), 404
     return jsonify({'message': 'User deleted'}), 200
+
+@bp.route('/health', methods=['GET'])
+def health():
+    """Health check endpoint."""
+    return jsonify({'status': 'ok'}), 200
