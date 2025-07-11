@@ -1,0 +1,46 @@
+name: CI - QA - Order Placement Service
+
+on:
+  push:
+    branches: [ "qa" ]
+    paths:
+      - 'apps/order/order-placement-service/**'
+      - '.github/workflows/qa-order-placement-service.yml'
+  pull_request:
+    branches: [ "qa" ]
+    paths:
+      - 'apps/order/order-placement-service/**'
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd apps/order/order-placement-service
+          npm install
+
+      - name: Run tests
+        run: |
+          cd apps/order/order-placement-service
+          node --experimental-vm-modules node_modules/jest/bin/jest.js
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: rommela462
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t rommela462/order-placement-service:qa-latest ./apps/order/order-placement-service
+          docker push rommela462/order-placement-service:qa-latest
