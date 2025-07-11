@@ -2,12 +2,5 @@
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
-  "references": [
-    {
-      "path": "./apps/user-create-e2e"
-    },
-    {
-      "path": "./apps/user-create"
-    }
-  ]
+  
 }
