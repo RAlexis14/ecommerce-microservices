@@ -1,0 +1,47 @@
+name: CI - QA - Inventory Service
+
+on:
+  push:
+    branches: [ "qa" ]
+    paths:
+      - 'apps/product/inventory-service/**'
+      - '.github/workflows/qa-inventory-service.yml'
+  pull_request:
+    branches: [ "qa" ]
+    paths:
+      - 'apps/product/inventory-service/**'
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd apps/product/inventory-service
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        run: |
+          cd apps/product/inventory-service
+          PYTHONPATH=. pytest tests/
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: rommela462
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t rommela462/inventory-service:qa-latest ./apps/product/inventory-service
+          docker push rommela462/inventory-service:qa-latest
