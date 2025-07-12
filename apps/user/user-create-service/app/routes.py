@@ -17,7 +17,7 @@ def get_db_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-@bp.route('/users', methods=['POST'])
+@bp.route('/users/create', methods=['POST'])
 @swag_from({
     'tags': ['Users'],
     'parameters': [

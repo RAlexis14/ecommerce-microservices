@@ -17,7 +17,7 @@ def get_db_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-@bp.route('/users/<int:user_id>', methods=['PUT'])
+@bp.route('/users/update/<int:user_id>', methods=['PUT'])
 @swag_from({
     'tags': ['Users'],
     'parameters': [

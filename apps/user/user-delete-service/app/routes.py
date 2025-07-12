@@ -15,7 +15,7 @@ def get_db_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-@bp.route('/users/<int:user_id>', methods=['DELETE'])
+@bp.route('/users/delete/<int:user_id>', methods=['DELETE'])
 @swag_from({
     'tags': ['Users'],
     'parameters': [
