@@ -6,7 +6,7 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use('/orders', orderRoutes);
+app.use('/', orderRoutes);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });

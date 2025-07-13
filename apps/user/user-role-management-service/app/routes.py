@@ -15,7 +15,7 @@ def get_db_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-@bp.route("/roles", methods=["POST"])
+@bp.route('/users/roles', methods=['POST'])
 @swag_from({
     'tags': ['Roles'],
     'parameters': [

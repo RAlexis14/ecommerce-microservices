@@ -17,7 +17,7 @@ def get_db_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-@bp.route('/recover', methods=['POST'])
+@bp.route('/users/password-recovery', methods=['POST'])
 @swag_from({
     'tags': ['Users'],
     'parameters': [
