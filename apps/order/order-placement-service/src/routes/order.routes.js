@@ -4,7 +4,7 @@ import { createOrder, getOrders } from '../controllers/order.controller.js';
 const router = express.Router();
 
 router.post('/create', createOrder);
-router.get('/list', getOrders);
+router.get('/list/:user_id', getOrdersByUserId);
 
 
 

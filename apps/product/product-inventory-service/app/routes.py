@@ -45,33 +45,48 @@ def add_inventory():
         conn.commit()
     return jsonify({'message': 'Inventory entry created'}), 201
 
-@bp.route('/inventory/list', methods=['GET'])   
+
+
+@bp.route('/inventory/list/<int:product_id>', methods=['GET'])   
 @swag_from({
     'tags': ['Inventory'],
+    'parameters': [
+        {
+            'name': 'product_id',
+            'in': 'path',
+            'type': 'integer',
+            'required': True,
+            'description': 'ID of the product in inventory'
+        }
+    ],
     'responses': {
         200: {
-            'description': 'List of inventory entries',
+            'description': 'Inventory entry for the product',
             'schema': {
-                'type': 'array',
-                'items': {
-                    'type': 'object',
-                    'properties': {
-                        'id': {'type': 'integer'},
-                        'product_id': {'type': 'integer'},
-                        'quantity': {'type': 'integer'}
-                    }
+                'type': 'object',
+                'properties': {
+                    'id': {'type': 'integer'},
+                    'product_id': {'type': 'integer'},
+                    'quantity': {'type': 'integer'}
                 }
             }
-        }
+        },
+        404: {'description': 'Inventory entry not found'}
     }
 })
-def get_inventory():
+def get_inventory(product_id):
     conn = get_db_connection()
     with conn:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM inventory")
-            result = cursor.fetchall()
+            cursor.execute("SELECT * FROM inventory WHERE product_id = %s", (product_id,))
+            result = cursor.fetchone()
+            if not result:
+                return jsonify({'message': 'Inventory entry not found'}), 404
     return jsonify(result), 200
+
+
+
+
 
 @bp.route('/health', methods=['GET'])
 def health():

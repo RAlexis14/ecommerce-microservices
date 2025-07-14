@@ -16,12 +16,19 @@ export const createOrder = async (req, res) => {
   }
 };
 
-export const getOrders = async (req, res) => {
+export const getOrdersByUserId = async (req, res) => {
+  const { user_id } = req.params;
+
   try {
-    const [rows] = await pool.query('SELECT * FROM orders');
+    const [rows] = await pool.query('SELECT * FROM orders WHERE user_id = ?', [user_id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'No orders found for this user' });
+    }
+
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Failed to fetch orders' });
+    res.status(500).json({ error: 'Failed to fetch orders for user' });
   }
 };
