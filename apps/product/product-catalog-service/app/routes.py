@@ -53,13 +53,49 @@ def create_product():
 
 
 @bp.route('/products/list/<int:product_id>', methods=['GET'])     
-def get_products():
+@swag_from({
+    'tags': ['Products'],
+    'parameters': [
+        {
+            'name': 'product_id',
+            'in': 'path',
+            'type': 'integer',
+            'required': True,
+            'description': 'ID of the product to retrieve'
+        }
+    ],
+    'responses': {
+        200: {
+            'description': 'Product found',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'id': {'type': 'integer'},
+                    'name': {'type': 'string'},
+                    'description': {'type': 'string'},
+                    'price': {'type': 'number'},
+                    'stock': {'type': 'integer'}
+                }
+            }
+        },
+        404: {'description': 'Product not found'}
+    }
+})
+def get_product_by_id(product_id):
     conn = get_db_connection()
     with conn:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM products")
-            result = cursor.fetchall()
-    return jsonify(result), 200
+            cursor.execute("SELECT * FROM products WHERE id = %s", (product_id,))
+            product = cursor.fetchone()
+    if product:
+        return jsonify(product), 200
+    else:
+        return jsonify({'error': 'Product not found'}), 404
+
+
+
+
+
 
 @bp.route('/health', methods=['GET'])
 def health():
