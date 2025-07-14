@@ -15,7 +15,7 @@ def get_db_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-@bp.route('/inventory', methods=['POST'])
+@bp.route('/inventory/add', methods=['POST'])   
 @swag_from({
     'tags': ['Inventory'],
     'parameters': [{
@@ -45,7 +45,7 @@ def add_inventory():
         conn.commit()
     return jsonify({'message': 'Inventory entry created'}), 201
 
-@bp.route('/inventory', methods=['GET'])
+@bp.route('/inventory/list', methods=['GET'])   
 @swag_from({
     'tags': ['Inventory'],
     'responses': {

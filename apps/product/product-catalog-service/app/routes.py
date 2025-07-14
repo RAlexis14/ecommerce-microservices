@@ -15,7 +15,7 @@ def get_db_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-@bp.route('/products', methods=['POST'])
+@bp.route('/products/create', methods=['POST'])  
 @swag_from({
     'tags': ['Products'],
     'parameters': [{
@@ -47,7 +47,8 @@ def create_product():
         conn.commit()
     return jsonify({'message': 'Product created'}), 201
 
-@bp.route('/products', methods=['GET'])
+
+@bp.route('/products/list', methods=['GET'])     
 def get_products():
     conn = get_db_connection()
     with conn:

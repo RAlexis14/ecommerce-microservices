@@ -15,7 +15,7 @@ def get_db_connection():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-@bp.route('/cart', methods=['POST'])
+@bp.route('/cart/add', methods=['POST'])               
 @swag_from({
     'tags': ['Cart'],
     'consumes': ['application/json'],
@@ -52,7 +52,7 @@ def add_to_cart():
         conn.commit()
     return jsonify({'message': 'Item added to cart'}), 201
 
-@bp.route('/cart/<int:user_id>', methods=['GET'])
+@bp.route('/cart/get/<int:user_id>', methods=['GET'])  
 @swag_from({
     'tags': ['Cart'],
     'parameters': [
@@ -90,7 +90,7 @@ def get_cart(user_id):
             result = cursor.fetchall()
     return jsonify(result), 200
 
-@bp.route('/cart/<int:user_id>', methods=['DELETE'])
+@bp.route('/cart/clear/<int:user_id>', methods=['DELETE'])  
 @swag_from({
     'tags': ['Cart'],
     'parameters': [
