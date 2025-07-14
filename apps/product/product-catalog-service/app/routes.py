@@ -18,23 +18,27 @@ def get_db_connection():
 @bp.route('/products/create', methods=['POST'])  
 @swag_from({
     'tags': ['Products'],
-    'parameters': [{
-        'name': 'body',
-        'in': 'body',
-        'required': True,
-        'schema': {
-            'type': 'object',
-            'properties': {
-                'name': {'type': 'string'},
-                'description': {'type': 'string'},
-                'price': {'type': 'number'},
-                'stock': {'type': 'integer'}
-            },
-            'required': ['name', 'price', 'stock']
-        }
-    }],
+    'parameters': [
+        {
+            'name': 'body',
+            'in': 'body',
+            'required': True,
+            'schema': {
+                 'type': 'object',
+                 'properties': {
+                        'name': {'type': 'string'},
+                        'description': {'type': 'string'},
+                        'price': {'type': 'number'},
+                        'stock': {'type': 'integer'}
+                 },
+                'required': ['name', 'price', 'stock']
+            }
+         }
+    ],
     'responses': {
-        201: {'description': 'Product created successfully'}
+        201: {
+            'description': 'Product created successfully'
+        }
     }
 })
 def create_product():
@@ -48,7 +52,7 @@ def create_product():
     return jsonify({'message': 'Product created'}), 201
 
 
-@bp.route('/products/list', methods=['GET'])     
+@bp.route('/products/list/<int:product_id>', methods=['GET'])     
 def get_products():
     conn = get_db_connection()
     with conn:
