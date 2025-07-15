@@ -1,0 +1,51 @@
+name: CI - QA - Web Frontend
+
+on:
+  push:
+    branches: [ "qa" ]
+    paths:
+      - 'apps/web/**'
+      - '.github/workflows/qa-web-frontend.yml'
+  pull_request:
+    branches: [ "qa" ]
+    paths:
+      - 'apps/web/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd apps/web
+          npm install
+
+      - name: Run linter (optional)
+        run: |
+          cd apps/web
+          npm run lint || echo "Lint errors ignored"
+
+      - name: Run build
+        run: |
+          cd apps/web
+          npm run build
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: rommela462
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t rommela462/web-frontend:qa-latest ./apps/web
+          docker push rommela462/web-frontend:qa-latest
