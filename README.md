@@ -1,3 +1,163 @@
+# ⚽ Fútbol Total RM – Quito Edition
+
+> Distributed e-commerce platform focused on **amateur football in Quito, Ecuador**, built using a **resilient, scalable microservices architecture**, fully containerized with Docker, automated with CI/CD, and deployed to AWS EC2.
+
+> 🎓 Final project – Distributed Programming Course – Universidad Central del Ecuador
+
+---
+
+![banner](docs/banner.png) <!-- Optional: place your own banner image in /docs -->
+
+---
+
+## 🚀 Main Features
+
+- 🧩 10 independent backend microservices
+- 🐍 Python (Flask) & 🟩 Node.js (Express) used in backend
+- 🖥️ Frontend built with React + Vite + Tailwind CSS
+- ☁️ AWS EC2 deployment with Elastic IPs
+- 🐳 Full Docker & Docker Compose integration
+- 🔐 JWT-based security and Role management
+- 🔄 NGINX API Gateway with service routing
+- ⚙️ GitHub Actions + Docker Hub for CI/CD automation
+- 🧭 Clean Architecture + MVC + Event-Driven integration
+
+---
+
+## 🧱 Tech Stack
+
+| Layer            | Technologies                                                  |
+|------------------|---------------------------------------------------------------|
+| Frontend         | React, Vite, Tailwind CSS                                     |
+| Backend          | Flask (Python), Express (Node.js)                             |
+| API Gateway      | NGINX                                                         |
+| Databases        | MySQL (3 logical databases: users, products, orders)          |
+| Containerization | Docker, Docker Compose                                        |
+| DevOps / CI/CD   | GitHub Actions, Docker Hub                                    |
+| Infrastructure   | AWS EC2 + Elastic IP                                          |
+| Security         | JWT, CORS, Role-based Access                                  |
+| Observability    | Prometheus, Grafana (optional in QA)                          |
+
+---
+
+## 📂 Project Structure
+
+```bash
+futbol-total/
+├── apps/
+│   ├── web/                      # Web frontend (React)
+│   ├── api-gateway/             # NGINX config
+│   ├── user-create-service/
+│   ├── user-read-service/
+│   ├── user-update-service/
+│   ├── user-delete-service/
+│   ├── user-password-recovery/
+│   ├── user-role-service/
+│   ├── product-catalog-service/
+│   ├── inventory-service/
+│   ├── order-placement-service/
+│   └── cart-service/
+├── qa-lacala/                   # Docker Compose setup for QA deployment
+├── docs/                        # Diagrams, documentation, reports, images
+└── .github/workflows/           # GitHub Actions pipelines
+```
+
+---
+
+## 🔧 How to Run (Local QA Environment)
+
+```bash
+git clone https://github.com/rommela462/futbol-total.git
+cd futbol-total/qa-lacala
+docker compose -f qa-services.yml up -d
+```
+
+- Access frontend via: `http://localhost` or EC2 Elastic IP
+
+---
+
+## 🧩 Implemented Microservices
+
+| Domain     | Microservice               | Language | Main Route                                |
+|------------|----------------------------|----------|--------------------------------------------|
+| Users      | Create                     | Python   | POST `/users/create`                       |
+|            | Read                       | Python   | GET `/users/read/<id>`                     |
+|            | Update                     | Python   | PUT `/users/update/<id>`                   |
+|            | Delete                     | Python   | DELETE `/users/delete/<id>`                |
+|            | Password Recovery          | Python   | POST `/users/password-recovery`            |
+|            | Role Management            | Python   | POST `/users/roles`                        |
+| Products   | Product Catalog            | Python   | GET `/products/list/<id>`                  |
+|            | Inventory                  | Python   | GET `/inventory/list/<id>`                 |
+| Orders     | Order Placement            | Node.js  | POST `/create`, GET `/list/:user_id`       |
+| Cart       | Shopping Cart              | Python   | POST `/cart/add`, GET `/cart/get/<id>`     |
+
+---
+
+## 🌐 Live Deployment (QA)
+
+- Frontend: `http://<your-frontend-elastic-ip>`
+- Gateway/API: `http://<your-api-gateway-ip>/products/list/1`
+- Swagger: Available on each microservice at `/docs`
+
+---
+
+## 📊 Architecture & Diagrams
+
+All project diagrams are located in the [`docs/`](docs/) folder:
+
+- 🧠 System Architecture (High-level)
+- 🔁 Use Case Diagram
+- 🧩 Microservices Interaction Flow
+- 📦 Database Schema (Users, Products, Orders, Cart)
+- 🔐 User State Diagram
+- 🎥 Demo (optional .gif or video)
+
+---
+
+## 🛠️ DevOps & Automation
+
+- 🔁 **CI/CD**: Automated using GitHub Actions
+- 🐳 **Docker Hub**: [rommela462](https://hub.docker.com/u/rommela462)
+- ☁️ **Auto Deployment** to AWS EC2 via SSH + Docker Compose
+- 🛠️ `qa` branch used for staging environment
+
+---
+
+## 📑 Documentation
+
+- 📝 Swagger: Each microservice exposes docs via `/docs`
+- 📄 Final report: `docs/informe-final.pdf`
+- 📊 Presentation: `docs/presentacion.pdf`
+- 🧠 Backend services follow MVC + Clean Architecture
+- ✅ Unit testing in each service using Pytest / Jest
+
+---
+
+## 👤 Author
+
+**Rommel Pachacama**  
+Universidad Central del Ecuador  
+Final Project – Distributed Programming 2025  
+📧 pachacamarommel@gmail.com
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License** – feel free to use for academic purposes.
+
+
+
+
+
+
+
+
+
+
+
+
+
 # EcommerceMicroservices
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
