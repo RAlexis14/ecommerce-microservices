@@ -1,0 +1,222 @@
+version: '3.9'
+
+services:
+  # Microservicios de Usuario
+  user-create-service:
+    image: rommela462/user-create-service:qa-latest
+    ports:
+      - "5000:5000"
+    environment:
+      MYSQL_HOST: mysql-users
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin
+      MYSQL_DB: users
+    networks:
+      - ecommerce-net
+
+  user-read-service:
+    image: rommela462/user-read-service:qa-latest
+    ports:
+      - "5001:5000"
+    environment:
+      MYSQL_HOST: mysql-users
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin
+      MYSQL_DB: users
+    networks:
+      - ecommerce-net
+
+  user-update-service:
+    image: rommela462/user-update-service:qa-latest
+    ports:
+      - "5002:5000"
+    environment:
+      MYSQL_HOST: mysql-users
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin
+      MYSQL_DB: users
+    networks:
+      - ecommerce-net
+
+  user-delete-service:
+    image: rommela462/user-delete-service:qa-latest
+    ports:
+      - "5003:5000"
+    environment:
+      MYSQL_HOST: mysql-users
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin
+      MYSQL_DB: users
+    networks:
+      - ecommerce-net
+
+  user-password-recovery-service:
+    image: rommela462/user-password-recovery-service:qa-latest
+    ports:
+      - "5004:5000"
+    environment:
+      MYSQL_HOST: mysql-users
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin
+      MYSQL_DB: users
+    networks:
+      - ecommerce-net
+
+  user-role-management-service:
+    image: rommela462/user-role-management-service:qa-latest
+    ports:
+      - "5005:5000"
+    environment:
+      MYSQL_HOST: mysql-users
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin
+      MYSQL_DB: users
+    networks:
+      - ecommerce-net
+
+  # Otros microservicios
+
+  product-catalog-service:
+    image: rommela462/product-catalog-service:qa-latest
+    ports:
+      - "5006:5000"
+    environment:
+      MYSQL_HOST: mysql-products
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin
+      MYSQL_DB: products
+    networks:
+      - ecommerce-net
+
+  inventory-service:
+    image: rommela462/inventory-service:qa-latest
+    ports:
+      - "5007:5000"
+    environment:
+      MYSQL_HOST: mysql-products
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin
+      MYSQL_DB: products
+    networks:
+      - ecommerce-net
+
+  order-placement-service:
+    image: rommela462/order-placement-service:qa-latest
+    ports:
+      - "5008:5000"
+    environment:
+      MYSQL_HOST: mysql-orders
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin
+      MYSQL_DB: orders
+    networks:
+      - ecommerce-net
+
+  cart-service:
+    image: rommela462/cart-service:qa-latest
+    ports:
+      - "5009:5000"
+    environment:
+      MYSQL_HOST: mysql-cart
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin
+      MYSQL_DB: cart
+    networks:
+      - ecommerce-net
+
+  # Bases de datos MySQL
+  mysql-users:
+    image: mysql:8.0
+    container_name: mysql-users
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: users
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-users-data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+
+  mysql-products:
+    image: mysql:8.0
+    container_name: mysql-products
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: products
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-products-data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+
+  mysql-orders:
+    image: mysql:8.0
+    container_name: mysql-orders
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: orders
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql-orders-data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+
+  mysql-cart:
+    image: mysql:8.0
+    container_name: mysql-cart
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: cart
+    ports:
+      - "3310:3306"
+    volumes:
+      - mysql-cart-data:/var/lib/mysql
+    networks:
+      - ecommerce-net
+
+  # API Gateway NGINX
+  nginx-gateway:
+    build:
+      context: ./nginx-gateway
+    ports:
+      - "8080:80"
+    depends_on:
+      - user-create-service
+      - user-read-service
+      - user-update-service
+      - user-delete-service
+      - user-password-recovery-service
+      - user-role-management-service
+      - product-catalog-service
+      - inventory-service
+      - order-placement-service
+      - cart-service
+    networks:
+      - ecommerce-net
+
+networks:
+  ecommerce-net:
+    driver: bridge
+
+volumes:
+  mysql-users-data:
+  mysql-products-data:
+  mysql-orders-data:
+  mysql-cart-data:
